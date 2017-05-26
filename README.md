@@ -3,20 +3,30 @@ Infrastructure Setup
 
 This repository holds configuration files in order to set up the cloud environment on AWS.
 
+![Screenshot](https://github.com/tweet-sentiment-analyis/webinterface/raw/master/img/webinterface.png)
+
+You may find the dedicated components' repository at the listed locations:
+* [Fetcher (aka. Registrar)](https://github.com/tweet-sentiment-analyis/fetcher)
+* [Tweet Analyzer](https://github.com/tweet-sentiment-analyis/analyzer)
+* [Elasticsearch Consumer Producer](https://github.com/tweet-sentiment-analyis/elasticsearch-producer)
+* [Webinterface](https://github.com/tweet-sentiment-analyis/webinterface)
+
 # How to setup
+The infrastructure will look like the following:
+![Deployment Diagram](https://github.com/tweet-sentiment-analyis/infra/blob/master/deployment-diagram.png)
 
 Please note, that the following setup steps have only been tested on Mac OS.
 Additionally, be prepared, that our setup script uses the default security group and subnets to set up instances.
 
 ## Prerequisites
-An IAM role with admin access is needed to run the setup scripts. 
+An IAM role with admin access is needed to run the setup scripts.
 Please create a role with these permissions and note the corresponding AWS access key and the secret key for that role.
-Further a SSH connection private key-pair is required during the setup of the EC2 instances. 
+Further a SSH connection private key-pair is required during the setup of the EC2 instances.
 Please create one, as described on the [AWS documentation](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
 
 In order to run the setup script, the ASW CLI is required. Please install it according to the [AWS documentation](http://docs.aws.amazon.com/cli/latest/userguide/installing.html).
 Once ASW CLI is installed it has to be configured using the following command in the terminal: `aws configure`.
-Please provide the AWS access key and secret key when promted. 
+Please provide the AWS access key and secret key when promted.
 Please also choose `us-west-2` as the region, and leave the last prompt empty.
 
 The setup script starts instances that are based on a public AMI created by us. The AMI is based on the Amazon Linux AMI 2017.03.0. It it was extended by installing the docker deamon on the machine, and also pull the latest docker containers for the project, to reduce the startup times of the instances. To use a different AMI one has to change the `ImageId` and the `SnapshotId`in the  LaunchConfigurationsAnalyzer.json and LaunchConfigurationsESProducer.json file.
@@ -77,7 +87,7 @@ Please note, that the command assumes, that Elasticsearch is accessible over HTT
 
 
 ## Setting up the Load Generator
-In order to simulate load on the infrastructure, the TweetProducer application fetches all currently stored tweets from Elasticsearch and republishes them without the sentiment value and a different id again to the first queue. 
+In order to simulate load on the infrastructure, the TweetProducer application fetches all currently stored tweets from Elasticsearch and republishes them without the sentiment value and a different id again to the first queue.
 
 Use the following steps, in order to test load on our infrastructure:
 1. Pull the docker image: `docker pull tweetsentimentanalysis/tweet-producer:latest`.
@@ -88,7 +98,7 @@ docker run -e ES_HOST='https://...' -e AWS_ACCESS_KEY_ID="..." -e AWS_SECRET_ACC
 ```
 
 3. Watch the queue getting filled up and the instances launched.
-4. Note, that scaling out may take some time, since the Autoscaling Policy is fetching metrics only each minute. 
+4. Note, that scaling out may take some time, since the Autoscaling Policy is fetching metrics only each minute.
 
 
 # Clean up when finished:
