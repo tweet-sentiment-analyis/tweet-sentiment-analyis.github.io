@@ -13,7 +13,7 @@ You may find the dedicated components' repository at the listed locations:
 
 # How to setup
 The infrastructure will look like the following:
-![Deployment Diagram](https://github.com/tweet-sentiment-analyis/infra/blob/master/deployment-diagram.png)
+![Deployment Diagram](https://cdn.rawgit.com/tweet-sentiment-analyis/infra/7f0a4540/deployment-diagram.png)
 
 Please note, that the following setup steps have only been tested on Mac OS.
 Additionally, be prepared, that our setup script uses the default security group and subnets to set up instances.
